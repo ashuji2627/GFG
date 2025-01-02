@@ -1,0 +1,15 @@
+class Solution {
+  public:
+    int countSubarrays(vector<int> &arr, int k) {
+        int ans = 0;
+        unordered_map<int,int> cummSum;
+        int sum = 0;
+        cummSum[0] = 1;
+        for(int a : arr) {
+            sum += a;
+            ans += cummSum[sum-k];
+            cummSum[sum]++;
+        }
+        return ans;
+    }
+};
