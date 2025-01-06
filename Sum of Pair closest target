@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    vector<int> sumClosest(vector<int>& arr, int target) {
+        int low=0,n=arr.size(),high=n-1;
+        if(n<2) return vector<int>(0);
+        vector<int> ans(2,-1000000);
+        sort(arr.begin(),arr.end());
+        ans[0]=arr[low];ans[1]=arr[high];
+        while(low<high){
+            if(abs(target-ans[0]-ans[1])>abs(target-arr[low]-arr[high])){
+                ans[0]=arr[low];ans[1]=arr[high];
+            }
+            
+          if(arr[low]+arr[high]<=target) low++;
+          else high--;
+                 
+        }
+        return ans;
+    }
+};
