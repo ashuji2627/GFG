@@ -1,0 +1,19 @@
+class Solution {
+  public:
+    Node* reverseList(struct Node* head) {
+        // code here
+        vector<int> v;
+        Node* temp = head;
+        while(temp!= NULL){
+            v.push_back(temp->data);
+            temp = temp->next;
+        }
+        Node* t = head;
+        int i=v.size()-1;
+        while(t!= NULL){
+            t->data = v[i--];
+              t = t->next;
+        }
+        return head;
+    }
+};
