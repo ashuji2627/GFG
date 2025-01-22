@@ -1,0 +1,72 @@
+class Solution {
+public:
+    // Helper function to pad the shorter list with leading zeros
+    Node* padList(Node* head, int padLength) {
+        for (int i = 0; i < padLength; ++i) {
+            Node* newNode = new Node(0);
+            newNode->next = head;
+            head = newNode;
+        }
+        return head;
+    }
+
+    // Helper function to recursively add two lists
+    Node* addListsHelper(Node* num1, Node* num2, int& carry) {
+        // Base case: if both nodes are null, return null
+        if (!num1 && !num2) return nullptr;
+
+        // Recursively add the next digits
+        Node* nextResult = addListsHelper(num1->next, num2->next, carry);
+
+        // Add current digits and carry
+        int sum = num1->data + num2->data + carry;
+        carry = sum / 10;
+        int digit = sum % 10;
+
+        // Create a new node for the current digit
+        Node* newNode = new Node(digit);
+        newNode->next = nextResult;
+
+        return newNode;
+    }
+
+    // Main function to add two lists
+    Node* addTwoLists(Node* num1, Node* num2) {
+        // Calculate lengths of both lists
+        int len1 = 0, len2 = 0;
+        Node* temp1 = num1, *temp2 = num2;
+
+        while (temp1) {
+            ++len1;
+            temp1 = temp1->next;
+        }
+        while (temp2) {
+            ++len2;
+            temp2 = temp2->next;
+        }
+
+        // Pad the shorter list with leading zeros
+        if (len1 < len2) num1 = padList(num1, len2 - len1);
+        else if (len2 < len1) num2 = padList(num2, len1 - len2);
+
+        // Initialize carry and add the two lists
+        int carry = 0;
+        Node* result = addListsHelper(num1, num2, carry);
+
+        // If there's a carry left, add it as a new node
+        if (carry > 0) {
+            Node* newNode = new Node(carry);
+            newNode->next = result;
+            result = newNode;
+        }
+
+        // Remove leading zeros from the result
+        while (result && result->data == 0 && result->next) {
+            Node* temp = result;
+            result = result->next;
+            delete temp;
+        }
+
+        return result;
+    }
+};
