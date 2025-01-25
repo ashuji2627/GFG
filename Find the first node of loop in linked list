@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    Node* findFirstNode(Node* head) {
+        // your code here
+        if(head->next==NULL) return NULL;
+        else if(head->next==head) return head;
+        Node* slow=head;
+        Node* fast=head;
+        while(fast!=NULL && fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
+            if(slow==fast) break;
+        }
+        if(fast==NULL || fast->next==NULL) return NULL;
+        slow=head;
+        while(slow!=fast){
+            slow=slow->next;
+            fast=fast->next;
+        }
+        return slow;
+    }
+};
