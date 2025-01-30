@@ -1,0 +1,49 @@
+class Solution {
+  public:
+    bool ispossible(int col,vector<int> &v,int k)
+    {
+        int j=1;
+        for(int i=col-1;i>=0;i--)
+        {
+            if(v[i]==k) return false;
+        }
+        for(int i=col-1;i>=0;i--)
+        {
+            if(v[i]==k-j)
+            return false;
+            if(v[i]==k+j)
+            return false;
+            j++;
+        }
+        return true;
+    
+    }
+    void fun(int col,vector<int> &v,vector<vector<int>> &ans)
+    {
+        int n=v.size();
+        if(col==n)
+        {
+            ans.push_back(v);
+        }
+        else
+        {
+            for(int k=1;k<=n;k++)
+            {
+                if(ispossible(col,v,k))
+                {
+                    v[col]=k;
+                    fun(col+1,v,ans);
+                    v[col]=-1;
+                }
+                
+            }
+        }
+    }
+    vector<vector<int>> nQueen(int n) {
+        // code here
+        vector<int> v(n,-1);
+        vector<vector<int>> ans;
+        fun(0,v,ans);
+        return ans;
+    }
+};
