@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    void findSumK(Node* root,int k,int &ans,unordered_map<int,int>&mp,int curr){
+        if(root==NULL){
+            return;
+        }
+        curr+=root->data;
+        if(mp.find(curr-k)!=mp.end()){
+            ans+=mp[curr-k];
+        }
+        mp[curr]++;
+        findSumK(root->left,k,ans,mp,curr);
+        findSumK(root->right,k,ans,mp,curr);
+        mp[curr]--;
+        return;
+    }
+    int sumK(Node *root, int k) {
+        int ans=0;
+        unordered_map<int,int>mp;
+        mp[0]=1;
+        int currSum=0;
+        findSumK(root,k,ans,mp,currSum);
+        return ans;
+    }
+};
