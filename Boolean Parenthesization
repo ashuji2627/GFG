@@ -1,0 +1,58 @@
+class Solution {
+  public:
+    int dp[101][101][2];
+    int solve(string &s ,int i ,int j ,bool isTrue){
+        if(i>j)
+        return 1;
+        else if(i==j){
+            if(isTrue){
+            return s[i] == 'T'?1:0;}
+            else {
+            return s[i] == 'F'?1:0;}
+        }
+        if(dp[i][j][isTrue] !=-1)
+        {
+            return dp[i][j][isTrue];
+        }
+        else {
+            int count =0;
+            for(int k=i+1;k<=j-1;k=k+2){
+            int lt = solve(s,i,k-1,1);
+            int lf = solve(s,i,k-1,0);
+            int rt = solve(s,k+1,j,1);
+            int rf = solve(s,k+1,j,0);
+            if(s[k] == '&'){
+                if(isTrue){
+                    count += lt*rt;
+                }else {
+                    count += (lt*rf) + (rt*lf) + (rf*lf);
+                }
+            }
+            else if(s[k] == '|'){
+                if(isTrue)
+                {
+                    count+=(lt*rf) + (rt*lf) + (lt*rt);
+                }else {
+                    count+=(lf*rf);
+                }
+            }
+            else if(s[k] == '^'){
+                if(isTrue){
+                    count +=(lf*rt) + (rf*lt);
+                }
+                else {
+                    count +=(lf*rf)+ (lt*rt);
+                }
+            }
+            
+            }
+            dp[i][j][isTrue] = count;
+            return count;
+        }
+    }
+    int countWays(string &s) {
+        // code here
+        memset(dp,-1,sizeof(dp));
+        return solve(s,0,s.length()-1,1);
+    }
+};
