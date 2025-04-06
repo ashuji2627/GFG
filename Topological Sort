@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    void dfs(int node, int& idx, vector<vector<int>>& adj, vector<int>& vis, vector<int>& ans){
+        vis[node] = 1;
+        for(int i = 0; i < adj[node].size(); i++){
+            if(vis[adj[node][i]] == 0)
+            dfs(adj[node][i], idx, adj, vis, ans);
+        }
+        ans[idx] = node;
+        idx--;
+    }
+    vector<int> topoSort(int V, vector<vector<int>>& edges) {
+        int n = edges.size(), idx = V-1;
+        vector<vector<int>> adj(V);
+        for(int i = 0; i < n; i++){
+            adj[edges[i][0]].push_back(edges[i][1]);
+        }
+        vector<int> vis(V, 0), ans(V);
+        for(int i = 0; i < V; i++){
+            if(vis[i] == 0){
+                dfs(i, idx, adj, vis, ans);
+            }
+        }
+        return ans;
+    }
+};
