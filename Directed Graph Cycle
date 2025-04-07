@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        // code here
+        int n = edges.size();
+        
+        vector<vector<int>> adj(V);
+        for(int i=0;i<n;i++){
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+        
+        vector<int> indegree(V, 0);
+        for(int i=0;i<n;i++){
+            indegree[edges[i][1]]++;
+        }
+        
+        queue<int> q;
+        for(int i=0; i<V; i++){
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+        
+        int visited = 0;
+        
+        while(!q.empty()){
+            int x = q.front();
+            q.pop();
+            visited++;
+            for(int i : adj[x]){
+                indegree[i]--;
+                if(indegree[i] == 0){
+                    q.push(i);
+                }
+            }
+        }
+        
+        return visited != V; 
+    }
+};
