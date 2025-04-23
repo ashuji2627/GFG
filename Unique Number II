@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    vector<int> singleNum(vector<int>& arr) {
+        // Code here.
+    int xor_all = 0;
+    for (int num : arr) {
+        xor_all ^= num;
+    }
+    // Isolate a bit where the two uniques differ
+    int diff_bit = xor_all & -xor_all;
+
+    int a = 0, b = 0;
+    // Partition into two groups and XOR each group
+    for (int num : arr) {
+        if (num & diff_bit)
+            a ^= num;
+        else
+            b ^= num;
+    }
+
+    // Return the results in increasing order
+    if (a < b)
+        return {a, b};
+    else
+        return {b, a};
+    }
+};
