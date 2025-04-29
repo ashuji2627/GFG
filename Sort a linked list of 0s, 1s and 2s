@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    Node* segregate(Node* head) {
+        // code here
+        Node* zeros = new Node(0); 
+        Node* ones = new Node(0); 
+        Node* twos = new Node(0); 
+        Node* zeroNext = zeros; 
+        Node* oneNext = ones; 
+        Node* twoNext = twos; 
+        Node* curr = head; 
+        while(curr != NULL){ 
+            if(curr->data == 0){
+                zeroNext->next = curr; 
+                zeroNext = zeroNext->next; 
+            } else if(curr->data == 1){ 
+                oneNext->next = curr; 
+                oneNext = oneNext->next; 
+            } else{ 
+                twoNext->next = curr; 
+                twoNext = twoNext->next; 
+            } curr = curr->next;
+        } 
+        zeroNext->next = ones->next ? ones->next : twos->next; oneNext->next = twos->next; twoNext->next = NULL;
+        return zeros->next ? zeros->next : (ones->next ? ones->next : twos->next);
+        
+    }
+};
