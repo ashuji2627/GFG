@@ -1,0 +1,37 @@
+class Solution {
+  public:
+    bool isPowerOfFive(long long num) {
+    if (num < 1) return false;
+    while (num % 5 == 0) {
+        num /= 5;
+    }
+    return num == 1;
+   }
+
+int solve(int ind, string &s, vector<int> &dp) {
+    if (ind < 0) return 0;
+    if (dp[ind] != -1) return dp[ind];
+    
+    int cnt = INT_MAX;  
+    long long val = 0;
+    for (int i = ind; i >= 0; --i) {
+        if (s[i] == '0') continue; // No leading zero
+        val+=(1<<(ind-i));
+        if (isPowerOfFive(val)) {
+            int left = solve(i - 1, s, dp);
+            if (left != INT_MAX) {
+                cnt = min(cnt, 1 + left);
+            }
+        }
+    }
+    return dp[ind] = cnt;
+}
+
+int cuts(string s) {
+    int n = s.length();
+    vector<int> dp(n, -1);
+    int ans = solve(n - 1, s, dp);
+    return ans == INT_MAX ? -1 : ans;
+}
+    
+};
