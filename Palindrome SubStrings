@@ -1,0 +1,70 @@
+class Manacher{
+    public:
+    string t;
+    vector<int>p;
+
+    Manacher(string &s)
+    {
+        for(char c:s)
+        {
+            t+=string("#",1)+c;
+        }
+        t+=string("#",1);
+
+        build(t);
+    }
+
+    void build(string &t)
+    {
+        int n=t.length();
+        p.assign(n,1);
+        int l=1;
+        int r=1;
+        for(int i=0;i<n;i++)
+        {
+            if((l+r)-i>=0)
+            p[i]=max(1,min(r-i,p[r+l-i]));
+
+            while((i+p[i])<n && (i-p[i])>=0 && t[i+p[i]]==t[i-p[i]])
+            {
+                p[i]++;
+            }
+
+            if((i+p[i])>r)
+            {
+                r=i+p[i];
+                l=i-p[i];
+            }
+        }
+        // cout<<t<<endl;
+    }
+    int countPalindromicSubstrings()
+    {
+        int sum=0;
+        int n=t.length();
+        // cout<<n<<endl;
+        for(int i=0;i<n;i++)
+        {
+            if(i&1)
+            {
+                sum+=(p[i]+1)/2;  // here we hava a character
+            }
+            else
+            {
+                sum+=(p[i])/2; // here we have a hash
+            }
+        }
+        return sum;
+    }
+};
+
+class Solution {
+  public:
+    int countPS(string &s) {
+        // code here
+        Manacher m(s);
+        
+        return m.countPalindromicSubstrings()-s.length();
+    }
+};
+
