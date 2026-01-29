@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    string firstNonRepeating(string &s) {
+        // code here
+        string res="";
+        vector<char> us,t;
+        for(int i=0;i<s.size();i++){
+            char c=s[i];
+            auto it=find(t.begin(),t.end(),c);
+            if(it==t.end()){
+                t.push_back(c);
+                us.push_back(c);
+            }
+            else{
+                auto it_us=find(us.begin(),us.end(),c);
+                if (it_us!=us.end())
+                    us.erase(it_us);
+            }
+            
+            if (us.empty())
+                res.push_back('#');
+            else
+                res.push_back(us[0]);
+        }
+        return res;
+    }
+};
