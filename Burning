@@ -1,0 +1,71 @@
+/*
+class Node {
+  public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    int minTime(Node* root, int target) {
+        // code here
+        Node*source = NULL;
+        map<Node*,Node*>parent;
+        queue<Node*>q;
+        q.push(root);
+        while(!q.empty()){
+          int n = q.size();
+          for(int i = 0;i<n;i++){
+            Node*f = q.front();
+            if(f->data == target) source = f; 
+            q.pop();
+            if(f->left){
+                q.push(f->left);
+                parent[f->left] = f;
+            }
+            if(f->right){
+                q.push(f->right);
+                parent[f->right] = f;
+            }
+          }
+        }
+        int ans = 0;
+        unordered_map<int,int>vis;
+        queue<Node*>qq;
+        qq.push(source);
+        vis[target] = 1;
+        while(!qq.empty()){
+            int n = qq.size();
+            bool s = false;
+            for(int i = 0;i<n;i++){
+                Node*f = qq.front();
+                qq.pop();
+                if(parent[f] && vis[parent[f]->data] == 0 ){
+                    qq.push(parent[f]);
+                    vis[parent[f]->data] = 1;
+                    s = true;
+                }
+                if(f->left && vis[f->left->data] == 0){
+                    vis[f->left->data] = 1;
+                    qq.push(f->left);
+                    s = true;
+                }
+                if(f->right && vis[f->right->data] == 0){
+                    vis[f->right->data] = 1;
+                    qq.push(f->right);
+                    s = true;
+                }
+                
+            }
+            if(s) ans++;
+        }
+        return ans;
+    }
+};
