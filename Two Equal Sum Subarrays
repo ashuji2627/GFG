@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    bool canSplit(vector<int>& arr) {
+        // code here
+        int total= accumulate(arr.begin(), arr.end(), 0);
+        int sum=0;
+        for(int i=0; i<arr.size(); i++){
+            sum= sum+ arr[i];
+            // total= total- sum;
+            int x= total- sum;
+            if(x==sum){
+                return true;
+            }
+        }
+        return false;
+    }
+};
