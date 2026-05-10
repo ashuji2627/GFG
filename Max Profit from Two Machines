@@ -1,0 +1,82 @@
+class Solution {
+  public:
+    int maxProfit(int x, int y, vector<int> &a, vector<int> &b) {
+        // code here
+        int ans = 0;
+    int size = a.size();
+    vector<bool> used(size, false);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int>>> pqA;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int>>> pqB;
+    
+    // Finding which one has greater value
+    for(int i = 0; i < size; i++) {
+        int diff = a[i] - b[i];
+        
+        if(diff >= 0) {
+            pqA.push( {diff, i} );
+        }
+        else {
+            pqB.push( {abs(diff), i} );
+        }
+    }
+    
+    while(x > 0 && y > 0) {
+        // Base Case
+        if(pqA.empty() || pqB.empty()) {
+            break;
+        }
+        
+        pair<int, int> topA = pqA.top();
+        pair<int, int> topB = pqB.top();
+        
+        if(topA.first >= topB.first) {
+            pqA.pop();
+            ans += a[topA.second];
+            used[topA.second] = true;
+            x--;
+        }
+        else {
+            pqB.pop();
+            ans += b[topB.second];
+            used[topB.second] = true;
+            y--;
+        }
+    }
+    
+    // If y == 0 || pqB.empty()
+    while(x > 0 && !pqA.empty()) {
+        int idx = pqA.top().second;
+        pqA.pop();
+        ans += a[idx];
+        used[idx] = true;
+        x--;
+    }
+    
+    // If x == 0 || pqA.empty()
+    while(y > 0 && !pqB.empty()) {
+        int idx = pqB.top().second;
+        pqB.pop();
+        ans += b[idx];
+        used[idx] = true;
+        y--;
+    }
+    
+    // If pqA.empty() && pqB.empty() || x > 0
+    for(int i = 0; i < size && x > 0; i++) {
+        if(!used[i]) {
+            ans += a[i];
+            x--;
+        }
+    }
+    
+    // If pqA.empty() && pqB.empty() || y > 0
+    for(int i = 0; i < size && y > 0; i++) {
+        if(!used[i]) {
+            ans += b[i];
+            y--;
+        }
+    }
+    
+    return ans;
+    }
+};
