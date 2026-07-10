@@ -1,0 +1,27 @@
+class Solution {
+  public:
+  int ans=-1;
+void longestPath(vector<vector<int>>&matrix,int xs,int ys,int xd,int yd,int count,vector<vector<int>>&v){
+if(xs<0 || ys<0 || xs==matrix.size() || ys==matrix[0].size() || matrix[xs][ys]==0 || v[xs][ys]==1){
+return;    
+}    
+if(xs==xd && ys==yd){
+    ans=max(ans,count);
+    return;
+}
+v[xs][ys]=1;
+longestPath(matrix,xs+1,ys,xd,yd,count+1,v);
+longestPath(matrix,xs-1,ys,xd,yd,count+1,v);
+longestPath(matrix,xs,ys+1,xd,yd,count+1,v);
+longestPath(matrix,xs,ys-1,xd,yd,count+1,v);
+v[xs][ys]=0;
+}
+    int longestPath(vector<vector<int>>& matrix, int xs, int ys, int xd, int yd) {
+        // code here
+        vector<vector<int>>v(matrix.size(),vector<int>(matrix[0].size()));
+        if(matrix[xs][ys]==1){
+            longestPath(matrix,xs,ys,xd,yd,0,v);
+        }
+        return ans;
+    }
+};
