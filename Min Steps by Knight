@@ -1,0 +1,50 @@
+class Solution {
+  public:
+    int minStepToReachTarget(vector<int>& knightPos, vector<int>& targetPos, int n) {
+        // Code here
+        if (knightPos[0] == targetPos[0] && knightPos[1] == targetPos[1]) {
+                    return 0;
+                }
+
+                int dx[] = {2, 2, -2, -2, 1, -1, 1, -1};
+                int dy[] = {1, -1, 1, -1, 2, 2, -2, -2};
+                queue<tuple<int, int, int>> q;
+                vector<vector<bool>> visited(n+1, vector<bool>(n+1, false));
+                q.push({knightPos[0]-1, knightPos[1]-1, 0});
+                visited[knightPos[0]-1][knightPos[1]-1] = true;
+
+                auto isSafe = [&](int x, int y) {
+                    return x >= 0 && x < n && y >= 0 && y < n && !visited[x][y];
+                };
+
+                while (!q.empty()) {
+
+                    auto [i, j, cost] = q.front();
+                    q.pop();
+
+                    if (i == targetPos[0] - 1 && j == targetPos[1] - 1) {
+                        return cost;
+                    }
+
+
+                    for (int k = 0; k < 8; k++) {
+
+                        int x = i + dx[k];
+                        int y = j + dy[k];
+
+                        if (isSafe(x, y)) {
+                            q.push({x, y, cost + 1});
+                            visited[x][y] = true;
+                        }
+
+                        if (isSafe(x, y)) {
+                            q.push({x, y, cost + 1});
+                            visited[x][y] = true;
+                        }
+                    }
+
+                }
+
+                return -1;
+    }
+};
