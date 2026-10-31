@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    int maxPackages(vector<int>& arr, int totalTime) {
+        // code here
+        int start=0;
+                int currSum=0;
+                int ans=0;
+                int n = arr.size();
+
+                if(totalTime>n){
+                    for(auto it:arr){
+                        ans+=it;
+                    }
+
+                    return ans;
+                }
+
+                for(int end=0;end<n;end++){
+
+                    currSum+=arr[end];
+                    if(end-start+1==totalTime){
+                        ans = max(ans,currSum);
+                        currSum-=arr[start];
+                        start++;
+                    }
+                }
+                return ans;
+    }
+};
