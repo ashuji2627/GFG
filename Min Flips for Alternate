@@ -1,0 +1,15 @@
+class Solution {
+  public:
+    int minFlips(string &s) {
+        // code here
+               int n=s.size();
+               int odd0=0;int even0=0;
+               for(int i=0;i<n;i++){
+                   if(s[i]=='0'){
+                       if(i%2)odd0++;
+                       else even0++;
+                   }
+               }
+               return min(n/2-odd0+even0,(n+1)/2-even0+odd0);
+    }
+};
