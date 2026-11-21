@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    int smallestSubWithSum(vector<int>& arr, int x) {
+        // code here
+        int n = arr.size();
+        int minLength = INT_MAX;
+        int start = 0;
+        int sum = 0;
+        for (int end = 0; end<n; end++) {
+        sum += arr[end];
+        while (sum>x) {
+        minLength = min(minLength, end - start + 1);
+        sum -= arr[start];
+        start++;
+        }
+
+        }
+        return minLength == INT_MAX ? 0:minLength;
+    }
+};
